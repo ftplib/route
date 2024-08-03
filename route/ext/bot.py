@@ -19,7 +19,7 @@ class Route(Bot):
         )
         
         self.cogs = {
-            "cogs.lastfms"
+            "cogs.lastfm"
         }
         
         self.token = ...
