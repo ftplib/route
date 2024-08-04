@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from aiohttp import ClientSession
 from typing import Any, Union, List
+from datetime import datetime
 
 
 class LastFM:
@@ -91,9 +92,29 @@ class Profile:
         self.display_name = display_name if display_name else username
         self.username = username
         self.playcount = playcount
-        self.registered = registered
+        self.registered = self.format_date(registered)
         self.country = country
         self.avatar_url = avatar_url
+        self.name_url = f"https://www.last.fm/user/{username}"
+
+
+    def format_date(self, date_value: Union[str, int]) -> str:
+        if date_value:
+            try:
+                if isinstance(date_value, int):
+                    date_value = str(date_value)
+
+                if date_value.isdigit():
+                    date_obj = datetime.fromtimestamp(int(date_value))
+                else:
+                    date_obj = datetime.strptime(date_value, '%d %b %Y, %H:%M')
+                    
+                return date_obj.strftime('%Y-%m-%d')
+
+            except ValueError:
+                return date_value
+            
+        return None
 
 
 class Tracks:
@@ -108,3 +129,7 @@ class Tracks:
         self.artist_name = artist_name
         self.album_name = album_name
         self.thumbnail = thumbnail
+        
+        self.name_url = f"https://www.last.fm/music/{artist_name}/_/{name}"
+        self.album_url = f"https://www.last.fm/music/{artist_name}/{album_name}"
+        self.artist_url = f"https://www.last.fm/music/{artist_name}"

@@ -66,8 +66,7 @@ class LastFM(Cog):
         
     ) -> Message:
         
-        await data.link_account(
-            self = data,
+        data().link_account(
             id = ctx.author.id,
             username = username
         )
@@ -100,16 +99,15 @@ class LastFM(Cog):
         return await ctx.send(
             embed = Embed(
                 title = f"LastFM: {username}",
-                description = (
-                    f'```Display: {profile.display_name}\n' + 
-                    f'Playcount: {profile.playcount}\n' + 
-                    f'Registered: {profile.registered}\n'+ 
-                    f'Country: {profile.country}```'
+                description = (f'```Display: {profile.display_name}\n'
+                    + f'Playcount: {profile.playcount}\n'
+                    + f'Registered: {profile.registered}\n'
+                    + f'Country: {profile.country}```'
                 ),
                 color = Models.dark_red
                 
             ).set_footer(
-                text = f"LastFM - {ctx.author.id}",
+                text = f"LastFM - Requested by {ctx.author.name}",
                 icon_url = self.icon
                 
             ).set_thumbnail(
@@ -140,22 +138,23 @@ class LastFM(Cog):
         embed = Embed(
             title = f"LastFM: {username}",
             color = Models.dark_red
+        ).set_footer(
+            text = ctx.author.name,
+            icon_url = self.icon
         )
         
         for track in tracks:
             
             embed.add_field(
                 name = track.name,
-                value = (
-                    f"Artist: {track.artist_name}\n",
-                    f"Album: {tracks.album_name}"
+                value = (f"Artist: [{track.artist_name}]({track.artist_url})\n"
+                    + f"Album: {track.album_name}({track.album_url})"
                 ),
                 inline = False
-            )
-            
-            return await ctx.send(embed = Embed)
-    
-    
+            )         
+            return await ctx.send(embed = embed)
+
+
     @lastfm.command(
         name = "nowplaying",
         brief = "Now playing!",
@@ -171,7 +170,7 @@ class LastFM(Cog):
         
     ) -> Message:
         
-        username = data.get_username(self = data, id = ctx.author.id)
+        username = data().get_username(id = ctx.author.id)
         if not username:
             return await ctx.deny(
                 content = f"You do not have a **linked account!**",
@@ -194,7 +193,7 @@ class LastFM(Cog):
             
             embed = Embed(
                 title = "LastFM: Nowplaying",
-                description = f"**{track.name}** by **{track.artist_name}**",
+                description = f"[**{track.name}**]({track.name_url}) by [**{track.artist_name}**]({track.artist_url})",
                 color = Models.dark_red
                 
             ).set_thumbnail(
@@ -202,11 +201,7 @@ class LastFM(Cog):
                 
             ).set_footer(
                 text = ctx.author.name,
-                icon_url = (
-                    ctx.author.avatar.url
-                    if ctx.author.avatar
-                    else self.icon
-                )
+                icon_url = self.icon
             )
         )
 

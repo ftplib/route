@@ -1,17 +1,11 @@
-from __future__ import annotations
-
 import sqlite3
 
 class Database:
-    def __init__(
-        self: Database, 
-        path = 'data/lastfm.db'
-    ):
+    def __init__(self, path='data/lastfm.db'):
         self.conn = sqlite3.connect(path)
         self.create_table()
 
-
-    def create_table(self: Database):
+    def create_table(self):
         with self.conn:
             self.conn.execute(
                 """
@@ -23,8 +17,7 @@ class Database:
                 """
             )
 
-
-    def link_account(self: Database, id, username):
+    def link_account(self, id, username):
         with self.conn:
             self.conn.execute(
                 """
@@ -41,8 +34,7 @@ class Database:
                 )
             )
 
-
-    def get_username(self: Database, id):
+    def get_username(self, id):
         cursor = self.conn.cursor()
         cursor.execute(
             '''
@@ -50,9 +42,7 @@ class Database:
             FROM users 
             WHERE id = ?
             ''', 
-            (
-                id
-            )
+            (id,)
         )
         row = cursor.fetchone()
         return row[0] if row else None

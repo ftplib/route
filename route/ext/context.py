@@ -10,7 +10,7 @@ class Models:
     tick = ""
     nope = ""
     
-    lastfm = ""
+    lastfm = "<:lastfm:1269488486117802057>"
     spotify = ""
     soundcloud = ""
     
