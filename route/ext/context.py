@@ -11,7 +11,7 @@ class Models:
     nope = ""
     
     lastfm = "<:lastfm:1269488486117802057>"
-    spotify = ""
+    spotify = "<:spotify:1269525780069744744>"
     soundcloud = ""
     
     green = 0xA4EB78
@@ -19,6 +19,7 @@ class Models:
     red = 0xF94848
     
     dark_red = 0xD71D28
+    dark_green = 0x2BBE58
     
 
 class Context(Context):

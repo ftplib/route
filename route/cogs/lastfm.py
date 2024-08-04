@@ -62,7 +62,7 @@ class LastFM(Cog):
     async def link(
         self: LastFM,
         ctx: Context,
-        username: str = None
+        username: str
         
     ) -> Message:
         
@@ -144,15 +144,15 @@ class LastFM(Cog):
         )
         
         for track in tracks:
-            
             embed.add_field(
                 name = track.name,
-                value = (f"Artist: [{track.artist_name}]({track.artist_url})\n"
-                    + f"Album: {track.album_name}({track.album_url})"
+                value = (f"Artist: **{track.artist_name}**\n"
+                    + f"Album: **{track.album_name}**"
                 ),
-                inline = False
-            )         
-            return await ctx.send(embed = embed)
+                inline = True
+            )    
+
+        return await ctx.send(embed = embed)
 
 
     @lastfm.command(
@@ -206,7 +206,7 @@ class LastFM(Cog):
         )
 
 
-async def setup(bot: Route) -> None:
+async def setup(bot: Route) -> Cog:
     cog_instance = LastFM(
         bot=bot, 
         key="..."

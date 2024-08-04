@@ -25,6 +25,9 @@ class Route(Bot):
     async def load_extensions(self) -> None:
         cogs = [
             "cogs.lastfm",
+            "cogs.spotify",
+            "cogs.developer",
+            "cogs.event"
         ]
         
         for cog in cogs:
