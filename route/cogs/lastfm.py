@@ -43,7 +43,7 @@ class LastFM(Cog):
     ) -> Message:
         
         return await ctx.help(
-            name = "lastfm",
+            title = "lastfm",
             brief = "LastFM",
             usage = "<args>",
             example = "nowplaying"
@@ -67,6 +67,7 @@ class LastFM(Cog):
     ) -> Message:
         
         await data.link_account(
+            self = data,
             id = ctx.author.id,
             username = username
         )
@@ -100,14 +101,19 @@ class LastFM(Cog):
             embed = Embed(
                 title = f"LastFM: {username}",
                 description = (
-                    f"```Playcount: {profile.playcount}\n",
-                    f"Registered: {profile.registered}\n",
-                    f"Country: {profile.country}```"
+                    f'```Display: {profile.display_name}\n' + 
+                    f'Playcount: {profile.playcount}\n' + 
+                    f'Registered: {profile.registered}\n'+ 
+                    f'Country: {profile.country}```'
                 ),
                 color = Models.dark_red
+                
             ).set_footer(
-                name = f"LastFM - {ctx.author.id}",
+                text = f"LastFM - {ctx.author.id}",
                 icon_url = self.icon
+                
+            ).set_thumbnail(
+                url = profile.avatar_url
             )
         )
 
@@ -165,7 +171,7 @@ class LastFM(Cog):
         
     ) -> Message:
         
-        username = data.get_username(id = ctx.author.id)
+        username = data.get_username(self = data, id = ctx.author.id)
         if not username:
             return await ctx.deny(
                 content = f"You do not have a **linked account!**",
@@ -189,7 +195,7 @@ class LastFM(Cog):
             embed = Embed(
                 title = "LastFM: Nowplaying",
                 description = f"**{track.name}** by **{track.artist_name}**",
-                color = 0x69
+                color = Models.dark_red
                 
             ).set_thumbnail(
                 url = track.thumbnail
@@ -206,9 +212,8 @@ class LastFM(Cog):
 
 
 async def setup(bot: Route) -> None:
-    return await bot.add_cog(
-        cog = LastFM(
-            bot = bot, 
-            key = ".."
-        )
+    cog_instance = LastFM(
+        bot=bot, 
+        key="..."
     )
+    await bot.add_cog(cog_instance)

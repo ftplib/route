@@ -18,33 +18,38 @@ class Route(Bot):
             
         )
         
-        self.cogs = {
-            "cogs.lastfm"
-        }
-        
-        self.token = ...
-        
-        
+        self.token = "..."
+
     async def setup_hook(self) -> None:
-        return await self.walk_commands()
+        await self.load_extensions()
     
     
-    async def walk_commands(self) -> None:
-       for cog in self.cogs:
-           await self.load_extension(cog)
+    async def load_extensions(self) -> None:
+        # List of cogs to load
+        cogs = [
+            "cogs.lastfm",
+            # Add other cogs here
+        ]
+        
+        for cog in cogs:
+            try:
+                await self.load_extension(cog)
+            except Exception as e:
+                print(str(e))
            
            
     async def get_context(
-        self: Route,
-        message: Message, *,
-        cls: Context
+        self, 
+        message, *,  
+        cls = Context
         
-    ) -> Union[Message, Context]:
-        
+    ) -> Message:
+
         return await super().get_context(
-            origin = message,
+            message, 
             cls = cls
         )
+        
         
 
     def run(self: Route) -> None:

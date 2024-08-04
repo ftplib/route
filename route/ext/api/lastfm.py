@@ -85,10 +85,10 @@ class Profile:
         username: str = None, 
         playcount: int = None, 
         registered: str = None, 
-        country: str = None, 
+        country: str = "USA", 
         avatar_url: str = None
     ):
-        self.display_name = display_name
+        self.display_name = display_name if display_name else username
         self.username = username
         self.playcount = playcount
         self.registered = registered
